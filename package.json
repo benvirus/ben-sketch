@@ -18,7 +18,9 @@
   ],
   "author": "Ben Chen",
   "license": "ISC",
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
+    "ben-canvas": "^1.0.0",
     "ben-component": "0.0.4"
   }
 }
