@@ -1,0 +1,21 @@
+{
+  "name": "ben-sketch",
+  "version": "1.0.0",
+  "description": "A sketch component used canvas with powerfull feature and easy to use.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@coding.codeages.net:qiqiu-video-player/ben-sketch.git"
+  },
+  "keywords": [
+    "sketch",
+    "canvas",
+    "draw",
+    "component"
+  ],
+  "author": "Ben Chen",
+  "license": "ISC"
+}
