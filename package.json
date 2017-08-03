@@ -2,7 +2,7 @@
   "name": "ben-sketch",
   "version": "1.0.0",
   "description": "A sketch component used canvas with powerfull feature and easy to use.",
-  "main": "index.js",
+  "main": "./src/js/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -17,5 +17,8 @@
     "component"
   ],
   "author": "Ben Chen",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "ben-component": "0.0.4"
+  }
 }
