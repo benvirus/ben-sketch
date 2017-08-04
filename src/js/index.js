@@ -9,6 +9,9 @@ const RECT = 'rect';
 const TEXT = 'text';
 const EASE = 'ease';
 
+const COLOR_RED = '#f00';
+const COLOR_DEFAULT = COLOR_RED;
+
 class Sketch extends Component {
   constructor(options) {
     super(null, options);
@@ -16,7 +19,7 @@ class Sketch extends Component {
     this.container = this.options.container;
     this.container.appendChild(this.el);
     this.toolType = LINE;
-    this.color = '#f00';
+    this.color = COLOR_DEFAULT;
     this.cache = [];
     this.textMeasure();
     this.initEvent();
@@ -35,7 +38,6 @@ class Sketch extends Component {
   }
 
   createCanvas() {
-    console.log(this.options.container.clientWidth, this.options.container.clientHeight)
     const canvas = super.createEl('canvas', {
       width: this.options.container.clientWidth,
       height: this.options.container.clientHeight,
@@ -59,7 +61,7 @@ class Sketch extends Component {
   }
 
   [`${LINE}MousedownListener`](e) {
-    console.log(LINE, 'mousedown');
+    console.log(LINE, 'mousedown', this.color);
     const linePoints = [];
     linePoints.push({
       x: e.offsetX,
@@ -93,7 +95,6 @@ class Sketch extends Component {
   }
 
   [`${LINE}MouseupListener`](e, linePoints) {
-    console.log(LINE, 'mouseup');
     if (this.tempCanvas) {
       this.container.removeChild(this.tempCanvas);
       if (linePoints.length < 2) {
@@ -104,11 +105,14 @@ class Sketch extends Component {
         point.y /= this.tempCanvas.height;
       });
       DataCanvas.line(this.ctx, {
-        points: linePoints
+        points: linePoints,
+        color: this.color
       });
       this.trigger(LINE, {
-        points: linePoints
+        points: linePoints,
+        color: this.color
       });
+      this.tempCanvas = null;
     }
   }
 
@@ -120,7 +124,8 @@ class Sketch extends Component {
       position: {
         x: x / this.ctx.canvas.width,
         y: y / this.ctx.canvas.height
-      }
+      },
+      color: this.color
     }
     // create temp canvas for preview rect in real-time.
     this.tempCanvas = super.createEl('canvas', {
@@ -131,6 +136,7 @@ class Sketch extends Component {
       className: 'sketch-temp rect-canvas'
     });
     const rectCtx = this.tempCanvas.getContext('2d');
+    rectCtx.strokeStyle = this.color;
 
     this.tempCanvas.addEventListener('mousemove', (e) => {
       // clear previous rect.
@@ -253,6 +259,14 @@ class Sketch extends Component {
     this.toolType = toolName;
   }
 
+  setColor(color) {
+    console.log(color);
+    if (!color) {
+      throw new Error('Sketch:setTool(toolColor): toolColor argument is needed!');
+    }
+    this.color = color;
+  }
+
   draw(type, options) {
     DataCanvas[type](this.ctx, options);
     this.cache.push({
@@ -263,9 +277,7 @@ class Sketch extends Component {
 
   clear() {
     DataCanvas.clear(this.ctx);
-    this.cache.push({
-      type: 'clear'
-    });
+    this.cache = [];
   }
 
   resize() {
