@@ -1,0 +1,64 @@
+.pf-canvas {
+  display: none;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 100;
+}
+
+.opened .pf-canvas {
+  display: block;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.opened img {
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.text-component {
+  position: absolute;
+  width: auto;
+  min-width: 80px;
+  min-height: 24px;
+  padding: 10px;
+  background: rgba(255,255,255,1);
+  font-size: 16px;
+  overflow-y: hidden;
+  overflow-x: hidden;
+  word-wrap:break-word;
+  line-height: 24px;
+  word-break:break-all;
+  color: #AAA;
+  box-shadow: 0 0 5px 0 rgba(0,0,0,0.3);
+  &.tc-inputing {
+    color: #333;
+  }
+  > div {
+    background: #DDD;
+    border-radius: 3px;
+    outline: none;
+    -webkit-user-modify: read-write-plaintext-only;
+  }
+}
+
+.rect-component {
+  position: absolute;
+  box-sizing: border-box;
+  border-style: solid;
+  user-select: none;
+  z-index: 99;
+}
+
+.layout {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 2000;
+  cursor: pointer;
+  background: transparent;
+}

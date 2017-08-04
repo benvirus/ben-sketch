@@ -88,11 +88,15 @@ class Sketch extends Component {
       linePoints.map(point => lineCtx.lineTo(point.x, point.y));
       lineCtx.stroke();
     });
-    this.tempCanvas.addEventListener('mouseup', (e) => this[`${LINE}MouseupListener`](e, linePoints));
+    this.tempCanvas.addEventListener('mouseup', (e) => {
+      e.stopPropagation();
+      this[`${LINE}MouseupListener`](e, linePoints);
+    });
     this.container.appendChild(this.tempCanvas);
   }
 
   [`${LINE}MouseupListener`](e, linePoints) {
+    console.log(linePoints);
     console.log(LINE, 'mouseup');
     if (this.tempCanvas) {
       this.container.removeChild(this.tempCanvas);
@@ -274,4 +278,5 @@ class Sketch extends Component {
   }
 }
 
-export default Sketch;
+module.exports = Sketch;
+
