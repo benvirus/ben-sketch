@@ -2,6 +2,9 @@
 ### Change Log
 
 ##### 1.0.2 (2017-08-07)
+* [bugfix] 更新 ben-canvas 的版本依赖，修复重复划线或者重复擦除的bug。
+
+##### 1.0.2 (2017-08-07)
 * [feature] 提供开发和打包的 webpack 配置。
 * [feature] 提供编译后的文件，无需使用者配置编译环境。
 * [bugfix] 修复 package 中遗漏样式文件的bug。
