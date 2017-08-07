@@ -4,19 +4,19 @@
 
 ##### line
 
-[!line](./screenshot/line.gif)
+![line](./screenshot/line.gif)
 
 ##### rect
 
-[!rect](./screenshot/rect.gif)
+![rect](./screenshot/rect.gif)
 
 ##### text
 
-[!text](./screenshot/text.gif)
+![text](./screenshot/text.gif)
 
 ##### ease
 
-[!ease](./screenshot/ease.gif)
+![ease](./screenshot/ease.gif)
 
 ### Usage
 
