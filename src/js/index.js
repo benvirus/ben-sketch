@@ -55,7 +55,7 @@ class Sketch extends Component {
     const measureEl = this.measureEl = super.createEl('pre', {
       'class': 'sketch-temp text-pre',
     });
-    this.container.appendChild(measureEl);
+    this.el.appendChild(measureEl);
   }
 
   [`${LINE}MousedownListener`](e) {
@@ -92,14 +92,14 @@ class Sketch extends Component {
       e.stopPropagation();
       this[`${LINE}MouseupListener`](e, linePoints);
     });
-    this.container.appendChild(this.tempCanvas);
+    this.el.appendChild(this.tempCanvas);
   }
 
   [`${LINE}MouseupListener`](e, linePoints) {
     console.log(linePoints);
     console.log(LINE, 'mouseup');
     if (this.tempCanvas) {
-      this.container.removeChild(this.tempCanvas);
+      this.el.removeChild(this.tempCanvas);
       if (linePoints.length < 2) {
         return;
       }
@@ -150,13 +150,13 @@ class Sketch extends Component {
     });
 
     this.tempCanvas.addEventListener('mouseup', (e) => this[`${RECT}MouseupListener`](e, rectData))
-    this.container.appendChild(this.tempCanvas);
+    this.el.appendChild(this.tempCanvas);
   }
 
   [`${RECT}MouseupListener`](e, rectData) {
     console.log(RECT, 'mouseup');
     if (this.tempCanvas) {
-      this.container.removeChild(this.tempCanvas);
+      this.el.removeChild(this.tempCanvas);
       if (!rectData.width || !rectData.height) {
         return;
       }
@@ -164,6 +164,7 @@ class Sketch extends Component {
       DataCanvas.rect(this.ctx, rectData);
       // send event to sdk.
       this.trigger(RECT, rectData);
+      delete this.tempCanvas;
     }
   }
 
@@ -182,7 +183,7 @@ class Sketch extends Component {
       x: e.offsetX,
       y: e.offsetY
     });
-    const textTool = this.textTool = new TextTool(this.container, textPoints[0].x, textPoints[0].y);
+    const textTool = this.textTool = new TextTool(this.el, textPoints[0].x, textPoints[0].y);
     textTool.on('valuechange', (event, data) => {
       this.measureEl.innerHTML = data + '  ';
       textTool.width(this.measureEl.clientWidth);
