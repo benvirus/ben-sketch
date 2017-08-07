@@ -43,7 +43,7 @@ class Sketch extends Component {
       height: this.options.container.clientHeight,
       style: 'display: block;'
     }, {
-      className: 'pf-canvas'
+      className: 'ben-sketch_canvas'
     });
     return canvas;
   }
@@ -183,12 +183,11 @@ class Sketch extends Component {
       this.textTool = null;
       return;
     }
+    const x = e.offsetX,
+      y = e.offsetY;
     const textPoints = [];
-    textPoints.push({
-      x: e.offsetX,
-      y: e.offsetY
-    });
-    const textTool = this.textTool = new TextTool(this.el, textPoints[0].x, textPoints[0].y);
+    textPoints.push({x, y});
+    const textTool = this.textTool = new TextTool(this.el, x, y);
     textTool.on('valuechange', (event, data) => {
       this.measureEl.innerHTML = data + '  ';
       textTool.width(this.measureEl.clientWidth);
@@ -200,8 +199,8 @@ class Sketch extends Component {
       }
       const textOptions = {
         position: {
-          x: e.offsetX / this.ctx.canvas.width,
-          y: e.offsetY / this.ctx.canvas.height
+          x: x / this.ctx.canvas.width,
+          y: y / this.ctx.canvas.height
         },
         color: this.color,
         text: data.data

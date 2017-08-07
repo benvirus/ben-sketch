@@ -3,5 +3,5 @@ const webpackConf = require('./webpack-config/base.js');
 
 const compile = webpack(webpackConf);
 compile.run(function() {
-    console.log('Finished Build!')
+  console.log('Finished Build!')
 });
