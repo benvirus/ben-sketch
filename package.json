@@ -2,7 +2,7 @@
   "name": "ben-sketch",
   "version": "1.0.1",
   "description": "A sketch component used canvas with powerfull feature and easy to use.",
-  "main": "./src/index.js",
+  "main": "./dist/sketch.js",
   "scripts": {
     "dev": "node build/dev-server"
   },
