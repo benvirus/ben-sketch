@@ -38,6 +38,9 @@ const sketch = new Sketch({
 ### Change Log
 
 ##### 1.0.5 (2017-08-07)
+* [bugfix] Fix screenshot gif url.
+
+##### 1.0.5 (2017-08-07)
 * [bugfix] 忘记打包 dist 文件了。👽
 * [feature] Add example and screenshot to README.md
 
