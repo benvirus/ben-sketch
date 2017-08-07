@@ -33,7 +33,7 @@
     "webpack-hot-middleware": "^2.18.2"
   },
   "dependencies": {
-    "ben-canvas": "^1.0.0",
+    "ben-canvas": "^1.0.1",
     "ben-component": "0.0.4"
   }
 }
