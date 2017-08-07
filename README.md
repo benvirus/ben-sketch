@@ -37,7 +37,7 @@ const sketch = new Sketch({
 
 ### Change Log
 
-##### 1.0.5 (2017-08-07)
+##### 1.0.6 (2017-08-07)
 * [bugfix] Fix screenshot gif url.
 
 ##### 1.0.5 (2017-08-07)
