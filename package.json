@@ -4,7 +4,8 @@
   "description": "A sketch component used canvas with powerfull feature and easy to use.",
   "main": "./dist/sketch.js",
   "scripts": {
-    "dev": "node build/dev-server"
+    "dev": "node build/dev-server",
+    "build": "node build/build"
   },
   "repository": {
     "type": "git",

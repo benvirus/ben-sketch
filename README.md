@@ -1,5 +1,45 @@
+# ben-sketch
+
+### screen shot
+
+##### line
+
+[!line](./screenshot/line.gif)
+
+##### rect
+
+[!rect](./screenshot/rect.gif)
+
+##### text
+
+[!text](./screenshot/text.gif)
+
+##### ease
+
+[!ease](./screenshot/ease.gif)
+
+### Usage
+
+import js and set a div element for init the sketch instance.
+
+```html
+// html
+<script type="text/javascript" src="//{you path to the dist file}/dist/sketch.js"></script>
+<div id="sketch"></div>
+```
+
+```
+// js
+const sketch = new Sketch({
+    container: document.getElementById('sketch')
+});
+```
 
 ### Change Log
+
+##### 1.0.5 (2017-08-07)
+* [bugfix] 忘记打包 dist 文件了。👽
+* [feature] Add example and screenshot to README.md
 
 ##### 1.0.4 (2017-08-07)
 * [bugfix] 修复因为内部canvas 的样式定位问题导致的不能绘图的bug。
