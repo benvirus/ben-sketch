@@ -28,14 +28,66 @@ import js and set a div element for init the sketch instance.
 <div id="sketch"></div>
 ```
 
-```
+```js
 // js
 const sketch = new Sketch({
     container: document.getElementById('sketch')
 });
 ```
 
+### Api Method
+
+| method | arguments | description |
+| ------ | --------- | ----------- |
+| setTool(Enum toolName) | Enum('line', 'rect', 'text', 'ease') | Set the current tool of sketch instance |
+| setColor(String color) | String 'rgb(0,255,255)' or '#ff0' or 'rgba(255,255,255,0.5)' | Set the current color of sketch instance |
+| clear | (empty) | Clear all draws of the sketch instance |
+
+##### example
+
+```js
+const sketch = new Sketch({
+    container: containerEl
+});
+
+sketch.setTool('rect'); // Set the tool to rectangle.
+sketch.setColor('rgba(255,0,0,0.5)');  // Set the color to red with 50% opacity.
+sketch.clear(); // Clear the sketch
+```
+
+### Event
+
+| eventName | callback arguments | Descriptions |
+| --------- | ------------------ | ------------ |
+| line | data | Emit when a line was drawed |
+| rect | data | Emit when a rect was drawed |
+| text | data | Emit when a text was drawed |
+| ease | data | Emit when a ease action happend |
+
+##### example
+
+```js
+const sketch = new Sketch({
+    container: containerEl
+});
+
+sketch.on('line', (data) => {
+    // ...   You can done anything with the line data. 
+    // The data include all the points of the line.
+});
+
+sketch.on('rect', (data) => {
+    // ...   You can done anything with the rect data. 
+    // The data include the rect's position, width, height, etc.
+});
+
+// ...
+```
+
 ### Change Log
+
+##### 1.1.1 (2017-08-08)
+* [bugfix] 修复鼠标移出绘画区域，绘制动作没有终止的bug。
 
 ##### 1.1.0 (2017-08-07)
 * [feature] 提供颜色设置功能。

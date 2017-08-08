@@ -90,14 +90,13 @@ class Sketch extends Component {
       linePoints.map(point => lineCtx.lineTo(point.x, point.y));
       lineCtx.stroke();
     });
-    this.tempCanvas.addEventListener('mouseup', (e) => {
-      e.stopPropagation();
-      this[`${LINE}MouseupListener`](e, linePoints);
-    });
+    this.tempCanvas.addEventListener('mouseup', (e) => this[`${LINE}MouseupListener`](e, linePoints));
+    this.tempCanvas.addEventListener('mouseleave', (e) => this[`${LINE}MouseupListener`](e, linePoints));
     this.el.appendChild(this.tempCanvas);
   }
 
   [`${LINE}MouseupListener`](e, linePoints) {
+    e.stopPropagation();
     if (this.tempCanvas) {
       this.el.removeChild(this.tempCanvas);
       if (linePoints.length < 2) {
@@ -154,12 +153,14 @@ class Sketch extends Component {
       rectCtx.strokeRect(x, y, width, height);
     });
 
-    this.tempCanvas.addEventListener('mouseup', (e) => this[`${RECT}MouseupListener`](e, rectData))
+    this.tempCanvas.addEventListener('mouseup', (e) => this[`${RECT}MouseupListener`](e, rectData));
+    this.tempCanvas.addEventListener('mouseleave', (e) => this[`${RECT}MouseupListener`](e, rectData));
     this.el.appendChild(this.tempCanvas);
   }
 
   [`${RECT}MouseupListener`](e, rectData) {
     console.log(RECT, 'mouseup');
+    e.stopPropagation();
     if (this.tempCanvas) {
       this.el.removeChild(this.tempCanvas);
       if (!rectData.width || !rectData.height) {
@@ -241,6 +242,7 @@ class Sketch extends Component {
     }
     this.canvas.addEventListener('mousemove', mousemove);
     this.canvas.addEventListener('mouseup', mouseup);
+    this.canvas.addEventListener('mouseleave', mouseup);
   }
 
   [`${EASE}MouseupListener`](e) {
