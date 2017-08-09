@@ -8,12 +8,15 @@ const LINE = 'line';
 const RECT = 'rect';
 const TEXT = 'text';
 const EASE = 'ease';
+const tools = [LINE, RECT, TEXT, EASE];
+const EASE_WIDTH = 20;
 
 const COLOR_RED = '#f00';
 const COLOR_DEFAULT = COLOR_RED;
 
 class Sketch extends Component {
   constructor(options) {
+    options.toolType || (options.toolType = LINE);
     super(null, options);
     this.ctx = this.canvas.getContext('2d');
     this.container = this.options.container;
@@ -24,13 +27,20 @@ class Sketch extends Component {
     this.textMeasure();
     this.initEvent();
     this.text = false;
+
+    this.on('toolchange', () => {
+      tools.map(toolClass => {
+        this.hasClass(toolClass) ? this.removeClass(toolClass) : null;
+      });
+      this.addClass(this.toolType);
+    });
   }
 
   createEl() {
     const el = super.createEl('div', {
       style: `display: block; width: 100%; height: 100%;`
     }, {
-      className: 'ben-sketch'
+      className: `ben-sketch ${this.options.toolType}`
     });
     this.canvas = this.createCanvas();
     el.appendChild(this.canvas);
@@ -69,8 +79,7 @@ class Sketch extends Component {
     });
     this.tempCanvas = super.createEl('canvas', {
       width: this.canvas.width,
-      height: this.canvas.height,
-      style: `cursor: url("${lineCursor}") 5 25, auto;`
+      height: this.canvas.height
     }, {
       className: 'sketch-temp line-canvas'
     });
@@ -132,8 +141,7 @@ class Sketch extends Component {
     // create temp canvas for preview rect in real-time.
     this.tempCanvas = super.createEl('canvas', {
       width: this.width(),
-      height: this.height(),
-      style: `cursor: url("${rectCursor}") 9 17, auto;`
+      height: this.height()
     }, {
       className: 'sketch-temp rect-canvas'
     });
@@ -185,7 +193,7 @@ class Sketch extends Component {
       return;
     }
     const x = e.offsetX,
-      y = e.offsetY;
+      y = e.offsetY - 8;
     const textPoints = [];
     textPoints.push({x, y});
     const textTool = this.textTool = new TextTool(this.el, x, y);
@@ -219,7 +227,7 @@ class Sketch extends Component {
       y: e.offsetY / this.ctx.canvas.height
     });
     this.ctx.save();
-    this.ctx.lineWidth = 10;
+    this.ctx.lineWidth = EASE_WIDTH;
     this.ctx.lineCap = 'round';
     this.ctx.lineJoin = 'round';
     this.ctx.globalCompositeOperation = 'destination-out';
@@ -261,7 +269,11 @@ class Sketch extends Component {
     if (!toolName) {
       throw new Error('Sketch:setTool(toolName): toolName argument is needed!');
     }
+    if (toolName == this.toolType) {
+      return;
+    }
     this.toolType = toolName;
+    this.trigger('toolchange');
   }
 
   setColor(color) {
