@@ -243,6 +243,7 @@ class Sketch extends Component {
     const mouseup = () => {
       this.canvas.removeEventListener('mousemove', mousemove);
       this.canvas.removeEventListener('mouseup', mouseup);
+      this.canvas.removeEventListener('mouseleave', mouseup);
       this.ctx.restore();
       this.trigger(EASE, {
         points: easePoints
