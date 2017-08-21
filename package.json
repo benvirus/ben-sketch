@@ -35,6 +35,6 @@
   },
   "dependencies": {
     "ben-canvas": "^1.0.1",
-    "ben-component": "0.0.4"
+    "ben-component": "0.0.5"
   }
 }
