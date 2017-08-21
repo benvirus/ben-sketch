@@ -86,6 +86,11 @@ sketch.on('rect', (data) => {
 
 ### Change Log
 
+##### 1.1.4 (2017-08-21)
+* [optimize] 修改绘图策略，采用常驻的绘图层，不再临时生成绘图层，完成后再删掉，会有一定的性能上的提升。
+* [optimize] 屏蔽鼠标右键，只支持鼠标左键点击绘图。
+* [feature] 新增 width 和 height 两个可选参数来定义绘图区域的大小，不传会使用container.clientWidht 和 container.clientHeight 作为绘图区域的大小。
+
 ##### 1.1.3 (2017-08-09)
 * [bugfix] 修复鼠标移出绘图区域橡皮擦工具会重复多次的bug。
 

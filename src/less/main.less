@@ -3,6 +3,7 @@
   height: 100%;
   position: relative;
   z-index: 990;
+  user-select: none;
   &.line {
     cursor: url('../img/pen@1x.ico') 5 25, auto;
   }
@@ -15,8 +16,10 @@
   &.ease {
     cursor: url('../img/ease@1x.ico') 24 24, auto;
   }
-  .ben-sketch_canvas {
+  .ben-sketch_canvas,
+  .ben-sketch_canvas-draw {
     position: absolute;
+    user-select: none;
   }
 
   .sketch-temp {

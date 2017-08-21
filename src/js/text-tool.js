@@ -4,11 +4,9 @@ import Canvas from 'ben-canvas';
 class TextTool extends Component {
   constructor(container, x, y) {
     super(undefined, {x, y, container});
-    console.log(x, y);
     this.container = container;
     container.appendChild(this.el);
     this.inputEl.focus();
-    console.log(this);
   }
 
   createEl() {
@@ -25,7 +23,6 @@ class TextTool extends Component {
     inputEl.setAttribute('autofocus', true);
     inputEl.onblur = () => {
       inputEl.removeAttribute('autofocus');
-      console.log(2121);
       this.trigger('submit', {
         data: this.text()
       });
