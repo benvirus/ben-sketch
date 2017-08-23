@@ -16,15 +16,11 @@ const COLOR_DEFAULT = COLOR_RED;
 
 class Sketch extends Component {
   constructor(options) {
+    options.width || (options.width = options.container.clientWidth);
+    options.height || (options.height = options.container.clientHeight);
     options.toolType || (options.toolType = LINE);
     super(null, options);
-    this._width = options.width || options.container.clientWidth;
-    this._height = options.height || options.container.clientHeight;
     this.ctx = this.canvas.getContext('2d');
-    this.drawCanvas = new DrawCanvas(this, {
-      width: options.container.clientWidth,
-      height: options.container.clientHeight
-    });
     this.initDrawCanvas();
     this.addChild(this.drawCanvas);
     this.container = this.options.container;
@@ -33,7 +29,6 @@ class Sketch extends Component {
     this.color = COLOR_DEFAULT;
     this.cache = [];
     this.textMeasure();
-    // this.initEvent();
     this.text = false;
 
     this.on('toolchange', () => {
@@ -61,9 +56,10 @@ class Sketch extends Component {
   }
 
   createCanvas() {
+    console.log(this.options);
     const canvas = super.createEl('canvas', {
-      width: this.options.container.clientWidth,
-      height: this.options.container.clientHeight,
+      width: this.options.width,
+      height: this.options.height,
       style: 'display: block;'
     }, {
       className: 'ben-sketch_canvas'
@@ -72,10 +68,7 @@ class Sketch extends Component {
   }
 
   initDrawCanvas() {
-    this.drawCanvas = new DrawCanvas(this, {
-      width: this.options.container.clientWidth,
-      height: this.options.container.clientHeight
-    });
+    this.drawCanvas = new DrawCanvas(this, this.options);
 
     this.on('colorchange', () => {
       this.drawCanvas.color = this.color;
@@ -100,12 +93,20 @@ class Sketch extends Component {
     this.el.appendChild(measureEl);
   }
 
-  width() {
-    return this._width;
+  width(width) {
+    if (typeof width !== 'undefined') {
+      this.options.width = width;
+      return width;
+    }
+    return this.options.width;
   }
 
-  height() {
-    return this._height;
+  height(height) {
+    if (typeof height !== 'undefined') {
+      this.options.height = height;
+      return height;
+    }
+    return this.options.height;
   }
 
   setTool(toolName) {
@@ -142,8 +143,10 @@ class Sketch extends Component {
   }
 
   resize() {
-    this.canvas.width = this.options.container.clientWidth;
-    this.canvas.height = this.options.container.clientHeight;
+    this.canvas.width = this.width(this.el.clientWidth);
+    this.canvas.height = this.height(this.el.clientHeight);
+    console.log(this.options === this.drawCanvas.options);
+    this.drawCanvas.resize();
   }
 }
 

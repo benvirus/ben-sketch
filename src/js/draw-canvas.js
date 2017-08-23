@@ -202,12 +202,17 @@ class DrawCavans extends Component {
     this.color = color;
   }
 
-  width() {
+  width(width) {
     return this.options.width;
   }
 
-  height() {
+  height(heihgt) {
     return this.options.height;
+  }
+
+  resize() {
+    this.el.width = this.width();
+    this.el.height = this.height();
   }
 }
 
