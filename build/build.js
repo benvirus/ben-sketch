@@ -16,9 +16,17 @@ const cleanDist = () => {
   }
 }
 
+webpackConf.devtool = '#cheap-module-source-map';
+
 const compile = webpack(webpackConf);
 cleanDist();
 
-compile.run(function() {
-  console.log('> Finished Build!')
+compile.run(function(err, stats) {
+  if (err) {
+    throw err;
+  }
+  const info = stats.toString({
+    colors: true
+  });
+  console.log(info);
 });

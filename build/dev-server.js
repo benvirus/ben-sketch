@@ -4,6 +4,8 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 const express = require('express');
 
+webpackConf.devtool = '#cheap-module-eval-source-map';
+
 const compiler = webpack(webpackConf);
 const devMiddleware = webpackDevMiddleware(compiler);
 const hotMiddleware = webpackHotMiddleware(compiler, {
