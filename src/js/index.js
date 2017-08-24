@@ -18,14 +18,13 @@ class Sketch extends Component {
   constructor(options) {
     options.width || (options.width = options.container.clientWidth);
     options.height || (options.height = options.container.clientHeight);
-    options.toolType || (options.toolType = LINE);
+    options.toolType || (options.toolType = '');
     super(null, options);
     this.ctx = this.canvas.getContext('2d');
     this.initDrawCanvas();
     this.addChild(this.drawCanvas);
     this.container = this.options.container;
     this.container.appendChild(this.el);
-    this.toolType = LINE;
     this.color = COLOR_DEFAULT;
     this.cache = [];
     this.textMeasure();
@@ -110,9 +109,6 @@ class Sketch extends Component {
   }
 
   setTool(toolName) {
-    if (!toolName) {
-      throw new Error('Sketch:setTool(toolName): toolName argument is needed!');
-    }
     if (toolName == this.toolType) {
       return;
     }
@@ -121,7 +117,6 @@ class Sketch extends Component {
   }
 
   setColor(color) {
-    console.log(color);
     if (!color) {
       throw new Error('Sketch:setTool(toolColor): toolColor argument is needed!');
     }

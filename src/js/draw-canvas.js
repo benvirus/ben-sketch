@@ -14,7 +14,6 @@ const COLOR_DEFAULT = COLOR_RED;
 class DrawCavans extends Component {
   constructor(parent, options) {
     super(parent, options);
-    this.tool = LINE;
     this.color = COLOR_DEFAULT;
     this.initEvent();
   }
