@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "node build/dev-server",
     "build": "node build/build",
-    "pub": "build/publish.sh"
+    "pub-patch": "build/publish.sh patch",
+    "pub-minor": "build/publish.sh minor"
   },
   "repository": {
     "type": "git",
