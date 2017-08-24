@@ -39,7 +39,7 @@ class DrawCavans extends Component {
       if (e.button !== 0) {
         return;
       }
-      this[`${this.tool}MousedownListener`](e);
+      this[`${this.tool}MousedownListener`] && this[`${this.tool}MousedownListener`](e);
     });
 
     this.on('mouseup', (e) => {
