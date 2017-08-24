@@ -18,3 +18,8 @@ git push origin $version
 echo '> push github...'
 git push github
 git push github $version
+
+git checkout develop
+git merge master
+git push origin
+git push github
