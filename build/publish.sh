@@ -1,3 +1,7 @@
+echo '> merge develop to master...'
+git checkout master
+git merge develop
+
 echo '> npm run build...'
 npm run build
 
