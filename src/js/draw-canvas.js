@@ -143,7 +143,11 @@ class DrawCavans extends Component {
       y = e.offsetY - 8;
     const textPoints = [];
     textPoints.push({x, y});
-    const textTool = this.textTool = new TextTool(this.parent.el, x, y);
+    const textTool = this.textTool = new TextTool(this.parent.el, {
+      x,
+      y,
+      color: this.color
+    });
     textTool.on('valuechange', (event, data) => {
       this.parent.measureEl.innerHTML = data + '  ';
       textTool.width(this.parent.measureEl.clientWidth);

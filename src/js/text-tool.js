@@ -2,8 +2,8 @@ import Component from 'ben-component';
 import Canvas from 'ben-canvas';
 
 class TextTool extends Component {
-  constructor(container, x, y) {
-    super(undefined, {x, y, container});
+  constructor(container, options) {
+    super(undefined, options);
     this.container = container;
     container.appendChild(this.el);
     this.inputEl.focus();
@@ -17,7 +17,7 @@ class TextTool extends Component {
 
     const inputEl = this.inputEl = super.createEl('textarea', {
       'class': 'tc-input',
-      style: `width: 100%; height: 100%`,
+      style: `width: 100%; height: 100%; color: ${this.options.color}`,
       placeholder: '请点击输入'
     });
     inputEl.setAttribute('autofocus', true);
