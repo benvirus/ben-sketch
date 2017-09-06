@@ -146,6 +146,8 @@ class DrawCavans extends Component {
     const textTool = this.textTool = new TextTool(this.parent.el, {
       x,
       y,
+      size: this.options.textSize,
+      lineHeight: this.options.textLineHeight,
       color: this.color
     });
     textTool.on('valuechange', (event, data) => {
@@ -163,7 +165,9 @@ class DrawCavans extends Component {
           y: y / this.ctx.canvas.height
         },
         color: this.color,
-        text: data.data
+        text: data.data,
+        size: data.size,
+        lineHeight: data.lineHeight
       }
       this.trigger('text.submit', textOptions);
     });

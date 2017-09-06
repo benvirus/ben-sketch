@@ -10,12 +10,16 @@ const TEXT = 'text';
 const EASE = 'ease';
 const tools = [LINE, RECT, TEXT, EASE];
 const EASE_WIDTH = 20;
+const TEXT_SIZE = 14;
+const TEXT_HEIGHT = 18;
 
 const COLOR_RED = '#f00';
 const COLOR_DEFAULT = COLOR_RED;
 
 class Sketch extends Component {
   constructor(options) {
+    options.textSize || (options.textSize = TEXT_SIZE);
+    options.textLineHeight || (options.textLineHeight = TEXT_HEIGHT);
     options.width || (options.width = options.container.clientWidth);
     options.height || (options.height = options.container.clientHeight);
     options.toolType || (options.toolType = '');
@@ -88,6 +92,7 @@ class Sketch extends Component {
   textMeasure() {
     const measureEl = this.measureEl = super.createEl('pre', {
       'class': 'sketch-temp text-pre',
+      style: `font-size: ${ this.options.textSize }px; line-height: ${ this.options.textLineHeight }px;`
     });
     this.el.appendChild(measureEl);
   }

@@ -17,14 +17,16 @@ class TextTool extends Component {
 
     const inputEl = this.inputEl = super.createEl('textarea', {
       'class': 'tc-input',
-      style: `width: 100%; height: 100%; color: ${this.options.color}`,
+      style: `width: 100%; height: 100%; color: ${this.options.color}; font-size: ${ this.options.size}px; line-height: ${ this.options.lineHeight }px;`,
       placeholder: '请点击输入'
     });
     inputEl.setAttribute('autofocus', true);
     inputEl.onblur = () => {
       inputEl.removeAttribute('autofocus');
       this.trigger('submit', {
-        data: this.text()
+        data: this.text(),
+        size: this.options.size,
+        lineHeight: this.options.lineHeight
       });
       this.dispose();
     };

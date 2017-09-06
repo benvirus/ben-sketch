@@ -9,7 +9,9 @@
   <div id="sketch" style="width: 600px; height: 600px; background: #EEE; border: 1px solid #DDD"></div>
   <script type="text/javascript">
     window.sketch = new Sketch({
-      container: document.getElementById('sketch')
+      container: document.getElementById('sketch'),
+      // textSize: 24,
+      // textLineHeight: 28,
     });
     sketch.setTool('line');
     sketch.on('ease', (event, data) => {
