@@ -30,10 +30,19 @@ import js and set a div element for init the sketch instance.
 
 ```js
 // js
-const sketch = new Sketch({
+const options = {
     container: document.getElementById('sketch')
-});
+}
+const sketch = new Sketch(options);
 ```
+
+### Options
+
+| Options | Type | Example | description |
+| ------ | --------- | ----------- |
+| container | DOM (require) | document.getElementById('sketch') | 用来实例化的DOM节点 |
+| textSize | Int | 14（default） | 设置文字工具的文字大小 |
+| textLineHeight | Int | 18 (default) | 设置文字工具的文字行高 |
 
 ### Api Method
 
@@ -85,6 +94,9 @@ sketch.on('rect', (data) => {
 ```
 
 ### Change Log
+
+##### 1.2.5 (2017-09-06)
+* [feature] 实现文字输入的大小行高可配置。
 
 ##### 1.2.4 (2017-09-04)
 * [optimize] 文字在输入的过程中，颜色也会根据当前颜色显示。
