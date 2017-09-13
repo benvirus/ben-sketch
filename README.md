@@ -39,7 +39,7 @@ const sketch = new Sketch(options);
 ### Options
 
 | Options | Type | Example | description |
-| ------ | --------- | ----------- |
+| ------ | --------- | ----------- | --------- |
 | container | DOM (require) | document.getElementById('sketch') | 用来实例化的DOM节点 |
 | textSize | Int | 14（default） | 设置文字工具的文字大小 |
 | textLineHeight | Int | 18 (default) | 设置文字工具的文字行高 |
@@ -94,6 +94,10 @@ sketch.on('rect', (data) => {
 ```
 
 ### Change Log
+
+##### 1.2.6 (2017-09-13)
+* [feature] 文字的字体选择在不同平台上表现差不多的字体。
+* [feature] 更新对 ben-canvas 的版本依赖。
 
 ##### 1.2.5 (2017-09-06)
 * [feature] 实现文字输入的大小行高可配置。
