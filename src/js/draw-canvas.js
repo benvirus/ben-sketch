@@ -6,7 +6,8 @@ const LINE = 'line';
 const RECT = 'rect';
 const TEXT = 'text';
 const EASE = 'ease';
-const tools = [LINE, RECT, TEXT, EASE];
+const ELLIPSE = 'ellipse';
+const tools = [LINE, RECT, TEXT, EASE, ELLIPSE];
 
 const COLOR_RED = '#f00';
 const COLOR_DEFAULT = COLOR_RED;
@@ -203,6 +204,47 @@ class DrawCavans extends Component {
     this.on('mousemove', mousemove);
     this.on('mouseup', mouseup);
     this.on('mouseleave', mouseup);
+  }
+
+  [`${ELLIPSE}MousedownListener`](e) {
+    console.log(ELLIPSE, 'mousedown');
+    const ctx = this.ctx;
+    const points = [];
+    // store the start position of the rect.
+    const x = event.offsetX, y = event.offsetY
+    points.push({
+      x: x / ctx.canvas.width,
+      y: y / ctx.canvas.height
+    })
+    const ellipseData = {
+      points,
+      lineWidth: 2
+    };
+    // create temp canvas for preview rect in real-time.
+    ctx.strokeStyle = this.color;
+
+    const onmousemove = (e) => {
+      points[1] = {};
+      // clear previous ellipse.
+      DataCanvas.clear(ctx);
+      points[1].x = e.offsetX / this.ctx.canvas.width;
+      points[1].y = e.offsetY / this.ctx.canvas.height;
+      DataCanvas.ellipse(ctx, ellipseData);
+    }
+
+    const offmousemove = () => {
+      DataCanvas.clear(ctx);
+      if (ellipseData.points[1]) {
+        this.trigger('ellipse.submit', ellipseData);
+      }
+      this.off('mousemove');
+      this.off('mouseup', offmousemove);
+      this.off('mouseleave', offmousemove);
+    }
+
+    this.on('mousemove', onmousemove);
+    this.on('mouseup', offmousemove);
+    this.on('mouseleave', offmousemove);
   }
 
   setColor(color) {

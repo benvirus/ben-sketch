@@ -8,7 +8,8 @@ const LINE = 'line';
 const RECT = 'rect';
 const TEXT = 'text';
 const EASE = 'ease';
-const tools = [LINE, RECT, TEXT, EASE];
+const ELLIPSE = 'ellipse';
+const tools = [LINE, RECT, TEXT, EASE, ELLIPSE];
 const EASE_WIDTH = 20;
 const TEXT_SIZE = 14;
 const TEXT_HEIGHT = 18;
@@ -81,7 +82,7 @@ class Sketch extends Component {
       this.drawCanvas.tool = this.toolType;
     });
     
-    ['line', 'rect', 'text', 'ease'].map(type => {
+    tools.map(type => {
       this.drawCanvas.on(`${type}.submit`, (event, data) => {
         DataCanvas[type](this.ctx, data);
         this.trigger(type, data);
