@@ -15,9 +15,10 @@ class TextTool extends Component {
       style: `left: ${this.options.x}px; top: ${this.options.y}px;`
     });
 
+    console.log(this.options.size, this.options.lineHeight, 9999999);
     const inputEl = this.inputEl = super.createEl('textarea', {
       'class': 'tc-input',
-      style: `width: 100%; height: 100%; color: ${this.options.color}; font-size: ${ this.options.size}px; line-height: ${ this.options.lineHeight }px;`,
+      style: `width: 100%; height: 100%; color: ${this.options.color}; font-size: ${ this.options.size }px; line-height: ${ this.options.lineHeight };`,
       placeholder: '请点击输入'
     });
     inputEl.setAttribute('autofocus', true);
@@ -59,6 +60,10 @@ class TextTool extends Component {
     if (value) {
       this.el.style.height = value + 'px';
     }
+  }
+
+  resize() {
+    this.inputEl.style = `width: 100%; height: 100%; color: ${this.options.color}; font-size: ${ this.options.size}px; line-height: ${ this.options.lineHeight };`;
   }
 
 }

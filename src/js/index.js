@@ -11,9 +11,15 @@ const EASE = 'ease';
 const tools = [LINE, RECT, TEXT, EASE];
 const EASE_WIDTH = 20;
 const TEXT_SIZE = 14;
-const TEXT_HEIGHT = 18;
+// const TEXT_HEIGHT = 18;
 
 const COLOR_RED = '#f00';
+const DEFAULT_TEXT_SCALE = 0.03;
+const DEFAULT_LINEHEIGHT_SCALE = 1.4;
+const NORMAL_DPR = 1;
+
+const TEXT_SCALE = DEFAULT_TEXT_SCALE;
+const TEXT_HEIGHT = DEFAULT_LINEHEIGHT_SCALE;
 const COLOR_DEFAULT = COLOR_RED;
 
 class Sketch extends Component {
@@ -22,6 +28,8 @@ class Sketch extends Component {
     options.textLineHeight || (options.textLineHeight = TEXT_HEIGHT);
     options.width || (options.width = options.container.clientWidth);
     options.height || (options.height = options.container.clientHeight);
+    options.textScale || (options.textScale = TEXT_SCALE);
+    options.screenDpr || (options.screenDpr || NORMAL_DPR);
     options.toolType || (options.toolType = '');
     super(null, options);
     this.ctx = this.canvas.getContext('2d');
@@ -63,7 +71,7 @@ class Sketch extends Component {
     const canvas = super.createEl('canvas', {
       width: this.options.width,
       height: this.options.height,
-      style: 'display: block;'
+      style: 'display: block; height: this.options.height / this.options.screenDpr; width: this.options.width / this.options.screenDpr;'
     }, {
       className: 'ben-sketch_canvas'
     });
@@ -80,7 +88,7 @@ class Sketch extends Component {
     this.on('toolchange', () => {
       this.drawCanvas.tool = this.toolType;
     });
-    
+
     ['line', 'rect', 'text', 'ease'].map(type => {
       this.drawCanvas.on(`${type}.submit`, (event, data) => {
         DataCanvas[type](this.ctx, data);
@@ -92,9 +100,13 @@ class Sketch extends Component {
   textMeasure() {
     const measureEl = this.measureEl = super.createEl('pre', {
       'class': 'sketch-temp text-pre',
-      style: `font-size: ${ this.options.textSize }px; line-height: ${ this.options.textLineHeight }px;`
+      style: `font-size: ${ this.options.textSize }px; line-height: ${ this.options.textLineHeight };`
     });
     this.el.appendChild(measureEl);
+  }
+
+  textReszie() {
+    this.measureEl.style = `font-size: ${ this.options.textSize }px; line-height: ${ this.options.textLineHeight };`;
   }
 
   width(width) {
@@ -145,10 +157,15 @@ class Sketch extends Component {
   resize() {
     this.canvas.width = this.width(this.el.clientWidth);
     this.canvas.height = this.height(this.el.clientHeight);
+    this.canvas.style.height = `${this.canvas.height / this.options.screenDpr}px`;
+    this.canvas.style.width = `${this.canvas.width / this.options.screenDpr}px`;
+
+    this.options.textSize = this.canvas.height * this.options.textScale;
     console.log(this.options === this.drawCanvas.options);
+    console.log(this.options.textSize, 11111111);
     this.drawCanvas.resize();
+    this.textReszie();
   }
 }
 
 module.exports = Sketch;
-
