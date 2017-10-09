@@ -18,6 +18,10 @@
 
 ![ease](./screenshot/ease.gif)
 
+##### ellipse
+
+![ease](./screenshot/ellipse.gif)
+
 ### Usage
 
 import js and set a div element for init the sketch instance.
@@ -48,9 +52,10 @@ const sketch = new Sketch(options);
 
 | method | arguments | description |
 | ------ | --------- | ----------- |
-| setTool(Enum toolName) | Enum('line', 'rect', 'text', 'ease') | Set the current tool of sketch instance |
+| setTool(Enum toolName) | Enum('line', 'rect', 'text', 'ease', 'ellipse') | Set the current tool of sketch instance |
 | setColor(String color) | String 'rgb(0,255,255)' or '#ff0' or 'rgba(255,255,255,0.5)' | Set the current color of sketch instance |
 | clear | (empty) | Clear all draws of the sketch instance |
+| draw(type, options) | | Draw the data to sketch |
 
 ##### example
 
@@ -72,6 +77,7 @@ sketch.clear(); // Clear the sketch
 | rect | data | Emit when a rect was drawed |
 | text | data | Emit when a text was drawed |
 | ease | data | Emit when a ease action happend |
+| ellipse | data | Emit when a ellipse action happend |
 
 ##### example
 
@@ -94,6 +100,9 @@ sketch.on('rect', (data) => {
 ```
 
 ### Change Log
+
+##### 1.3.0 (2017-09-30)
+* [feature] 增加通过拖动绘制椭圆的方法。
 
 ##### 1.2.6 (2017-09-13)
 * [feature] 文字的字体选择在不同平台上表现差不多的字体。
