@@ -163,7 +163,6 @@ class Sketch extends Component {
 
     this.options.textSize = this.canvas.height * this.options.textScale;
     console.log(this.options === this.drawCanvas.options);
-    console.log(this.options.textSize, 11111111);
     this.drawCanvas.resize();
     this.textReszie();
   }

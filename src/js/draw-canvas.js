@@ -60,14 +60,14 @@ class DrawCavans extends Component {
     console.log(LINE, 'mousedown', this.color);
     const linePoints = [];
     linePoints.push({
-      x: e.offsetX / this.el.width * this.options.screenDpr,
-      y: e.offsetY / this.el.height * this.options.screenDpr
+      x: this.getComputedDprSize(e.offsetX / this.el.width),
+      y: this.getComputedDprSize(e.offsetY / this.el.height)
     });
     const ommousemove = (event) => {
       DataCanvas.clear(this.ctx);
       linePoints.push({
-        x: event.offsetX / this.el.width * this.options.screenDpr,
-        y: event.offsetY / this.el.height * this.options.screenDpr
+        x: this.getComputedDprSize(event.offsetX / this.el.width),
+        y: this.getComputedDprSize(event.offsetY / this.el.height)
       });
       DataCanvas.line(ctx, {
         color: this.color,
@@ -94,11 +94,10 @@ class DrawCavans extends Component {
     const ctx = this.ctx;
     // store the start position of the rect.
     const x = event.offsetX, y = event.offsetY;
-    console.log(event, 333);
     const rectData = {
       position: {
-        x: x / this.el.width * this.options.screenDpr,
-        y: y / this.el.height * this.options.screenDpr
+        x: this.getComputedDprSize(x / this.el.width),
+        y: this.getComputedDprSize(y / this.el.height)
       },
       color: this.color
     }
@@ -112,10 +111,10 @@ class DrawCavans extends Component {
       const width = e.offsetX - x,
         height = e.offsetY - y;
       // store the width and height of current rect in ratio of canvas demension.
-      rectData.width = width / this.el.width * this.options.screenDpr;
-      rectData.height = height / this.el.height * this.options.screenDpr;
+      rectData.width = this.getComputedDprSize(width / this.el.width);
+      rectData.height = this.getComputedDprSize(height / this.el.height);
       // draw the current rect to temp canvas for preview.
-      this.ctx.strokeRect(x * this.options.screenDpr, y * this.options.screenDpr, width * this.options.screenDpr, height * this.options.screenDpr);
+      this.ctx.strokeRect(this.getComputedDprSize(x), this.getComputedDprSize(y), this.getComputedDprSize(width), this.getComputedDprSize(height));
     }
 
     const offmousemove = () => {
@@ -163,8 +162,8 @@ class DrawCavans extends Component {
       }
       const textOptions = {
         position: {
-          x: x / this.el.width * this.options.screenDpr,
-          y: y / this.el.height * this.options.screenDpr
+          x: this.getComputedDprSize(x / this.el.width),
+          y: this.getComputedDprSize(y / this.el.height)
         },
         color: this.color,
         text: data.data,
@@ -179,13 +178,13 @@ class DrawCavans extends Component {
     console.log(EASE, 'mousedown');
     const easePoints = [];
     easePoints.push({
-      x: e.offsetX / this.el.width * this.options.screenDpr,
-      y: e.offsetY / this.el.height * this.options.screenDpr
+      x: this.getComputedDprSize(e.offsetX / this.el.width),
+      y: this.getComputedDprSize(e.offsetY / this.el.height)
     });
     const mousemove = (e) => {
       easePoints.push({
-        x: e.offsetX / this.el.width * this.options.screenDpr,
-        y: e.offsetY / this.el.height * this.options.screenDpr
+        x: this.getComputedDprSize(e.offsetX / this.el.width),
+        y: this.getComputedDprSize(e.offsetY / this.el.height)
       });
       DataCanvas.ease(this.parent.ctx, {
         points: easePoints,
@@ -258,6 +257,10 @@ class DrawCavans extends Component {
 
   height(heihgt) {
     return this.options.height;
+  }
+
+  getComputedDprSize(x) {
+    return x * this.options.screenDpr;
   }
 
   resize() {
