@@ -169,7 +169,7 @@ class DrawCavans extends Component {
         color: this.color,
         text: data.data,
         size: data.size,
-        lineHeight: data.lineHeight
+        lineHeight: data.lineHeight * data.size
       }
       this.trigger('text.submit', textOptions);
     });
