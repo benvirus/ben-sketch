@@ -101,6 +101,9 @@ sketch.on('rect', (data) => {
 
 ### Change Log
 
+##### 1.3.3 (2017-10-11)
+* [optimize] 文字工具，绘图数据添加width、height两个数据。
+
 ##### 1.3.0 (2017-09-30)
 * [feature] 增加通过拖动绘制椭圆的方法。
 
