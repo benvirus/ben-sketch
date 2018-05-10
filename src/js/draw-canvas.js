@@ -7,7 +7,8 @@ const RECT = 'rect';
 const TEXT = 'text';
 const EASE = 'ease';
 const ELLIPSE = 'ellipse';
-const tools = [LINE, RECT, TEXT, EASE, ELLIPSE];
+const ARROR = 'arror';
+const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROR];
 
 const COLOR_RED = '#f00';
 const COLOR_DEFAULT = COLOR_RED;
