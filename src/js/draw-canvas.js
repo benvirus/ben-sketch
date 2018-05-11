@@ -131,6 +131,54 @@ class DrawCavans extends Component {
     this.on('mouseleave', offmousemove);
   }
 
+  [`${ARROR}MousedownListener`](event) {
+    console.log(ARROR, 'mousedown');
+    const ctx = this.ctx;
+    // store the start position of the rect.
+    const x = event.offsetX, y = event.offsetY;
+    const arrorPoints = [];
+    arrorPoints.push({
+      x: event.offsetX / this.el.width,
+      y: event.offsetY / this.el.height
+    });
+    // create temp canvas for preview rect in real-time.
+    ctx.strokeStyle = this.color;
+
+    const onmousemove = (e) => {
+      // clear previous rect.
+      DataCanvas.clear(this.ctx);
+      // get the current rect width and height;
+      arrorPoints[1] = {
+        x: e.offsetX / this.ctx.canvas.width,
+        y: e.offsetY / this.ctx.canvas.height,
+      };
+      // draw the current rect to temp canvas for preview.
+      DataCanvas.arror(ctx, {
+        color: this.color,
+        points: arrorPoints
+      });
+    }
+
+    const offmousemove = () => {
+      DataCanvas.clear(this.ctx);
+      this.trigger('arror.submit', {
+        color: this.color,
+        points: arrorPoints
+      });
+      // this.trigger('line.submit', {
+      //   color: '#000000',
+      //   points: arrorPoints
+      // });
+      this.off('mousemove');
+      this.off('mouseup', offmousemove);
+      this.off('mouseleave', offmousemove);
+    }
+
+    this.on('mousemove', onmousemove);
+    this.on('mouseup', offmousemove);
+    this.on('mouseleave', offmousemove);
+  }
+
   [`${TEXT}MousedownListener`](e) {
 
   }
