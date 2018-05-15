@@ -7,7 +7,8 @@ const RECT = 'rect';
 const TEXT = 'text';
 const EASE = 'ease';
 const ELLIPSE = 'ellipse';
-const tools = [LINE, RECT, TEXT, EASE, ELLIPSE];
+const ARROR = 'arror';
+const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROR];
 
 const COLOR_RED = '#f00';
 const COLOR_DEFAULT = COLOR_RED;
@@ -120,6 +121,50 @@ class DrawCavans extends Component {
     const offmousemove = () => {
       DataCanvas.clear(this.ctx);
       this.trigger('rect.submit', rectData);
+      this.off('mousemove');
+      this.off('mouseup', offmousemove);
+      this.off('mouseleave', offmousemove);
+    }
+
+    this.on('mousemove', onmousemove);
+    this.on('mouseup', offmousemove);
+    this.on('mouseleave', offmousemove);
+  }
+
+  [`${ARROR}MousedownListener`](event) {
+    console.log(ARROR, 'mousedown');
+    const ctx = this.ctx;
+    // store the start position of the arror.
+    const x = event.offsetX, y = event.offsetY;
+    const arrorPoints = [];
+    arrorPoints.push({
+      x: event.offsetX / this.el.width,
+      y: event.offsetY / this.el.height
+    });
+    // create temp canvas for preview arror in real-time.
+    ctx.strokeStyle = this.color;
+
+    const onmousemove = (e) => {
+      // clear previous arror.
+      DataCanvas.clear(this.ctx);
+      // get the current arror end position;
+      arrorPoints[1] = {
+        x: e.offsetX / this.ctx.canvas.width,
+        y: e.offsetY / this.ctx.canvas.height,
+      };
+      // draw the current arror to temp canvas for preview.
+      DataCanvas.arror(ctx, {
+        color: this.color,
+        points: arrorPoints
+      });
+    }
+
+    const offmousemove = () => {
+      DataCanvas.clear(this.ctx);
+      this.trigger('arror.submit', {
+        color: this.color,
+        points: arrorPoints
+      });
       this.off('mousemove');
       this.off('mouseup', offmousemove);
       this.off('mouseleave', offmousemove);

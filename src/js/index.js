@@ -9,7 +9,8 @@ const RECT = 'rect';
 const TEXT = 'text';
 const EASE = 'ease';
 const ELLIPSE = 'ellipse';
-const tools = [LINE, RECT, TEXT, EASE, ELLIPSE];
+const ARROR = 'arror';
+const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROR];
 const EASE_WIDTH = 20;
 const TEXT_SIZE = 14;
 const TEXT_HEIGHT = 18;
@@ -31,7 +32,11 @@ class Sketch extends Component {
     this.container = this.options.container;
     this.container.appendChild(this.el);
     this.color = COLOR_DEFAULT;
-    this.cache = [];
+    this.defaultPage = 0;
+    this.pageNum = this.defaultPage;
+    this.cache = {
+      0: [],
+    };
     this.textMeasure();
     this.text = false;
 
@@ -85,6 +90,10 @@ class Sketch extends Component {
     tools.map(type => {
       this.drawCanvas.on(`${type}.submit`, (event, data) => {
         DataCanvas[type](this.ctx, data);
+        this.cache[this.pageNum].push({
+          type,
+          options: data,
+        });
         this.trigger(type, data);
       });
     });
@@ -131,16 +140,55 @@ class Sketch extends Component {
   }
 
   draw(type, options) {
-    DataCanvas[type](this.ctx, options);
-    this.cache.push({
-      type,
-      options
+    if (!this[type]) {
+      DataCanvas[type](this.ctx, options);
+      if (!this.cache[this.pageNum]) {
+        this.cache[this.pageNum] = [];
+      }
+      this.cache[this.pageNum].push({
+        type,
+        options
+      });
+    } else {
+      this[type](options);
+    }
+  }
+
+  clear(pageNum) {
+    if (isNaN(pageNum)) {
+      DataCanvas.clear(this.ctx);
+    }
+    pageNum = isNaN(pageNum) ? this.pageNum : pageNum;
+    console.log(pageNum);
+    this.cache[pageNum] = [];
+  }
+
+  changePage(pageNum) {
+    if (isNaN(pageNum) || pageNum === this.pageNum) {
+      return;
+    }
+    this.pageNum = pageNum;
+    if (!this.cache[pageNum]) {
+      this.cache[pageNum] = [];
+    }
+    this.repaint(pageNum);
+  }
+
+  repaint(pageNum) {
+    DataCanvas.clear(this.ctx);
+    console.log(this.cache);
+    pageNum = isNaN(pageNum) ? this.pageNum : pageNum;
+    this.cache[pageNum].map((item) => {
+      DataCanvas[item.type](this.ctx, item.options);
     });
   }
 
-  clear() {
-    DataCanvas.clear(this.ctx);
-    this.cache = [];
+  undo(pageNum) {
+    pageNum = isNaN(pageNum) ? this.pageNum : pageNum;
+    this.cache[pageNum].pop();
+    if (pageNum === this.pageNum) {
+      this.repaint(pageNum);
+    }
   }
 
   resize() {
@@ -148,6 +196,7 @@ class Sketch extends Component {
     this.canvas.height = this.height(this.el.clientHeight);
     console.log(this.options === this.drawCanvas.options);
     this.drawCanvas.resize();
+    this.repaint(this.pageNum);
   }
 }
 
