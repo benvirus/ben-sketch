@@ -7,8 +7,8 @@ const RECT = 'rect';
 const TEXT = 'text';
 const EASE = 'ease';
 const ELLIPSE = 'ellipse';
-const ARROR = 'arror';
-const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROR];
+const ARROW = 'arrow';
+const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROW];
 
 const COLOR_RED = '#f00';
 const COLOR_DEFAULT = COLOR_RED;
@@ -131,39 +131,39 @@ class DrawCavans extends Component {
     this.on('mouseleave', offmousemove);
   }
 
-  [`${ARROR}MousedownListener`](event) {
-    console.log(ARROR, 'mousedown');
+  [`${ARROW}MousedownListener`](event) {
+    console.log(ARROW, 'mousedown');
     const ctx = this.ctx;
-    // store the start position of the arror.
+    // store the start position of the arrow.
     const x = event.offsetX, y = event.offsetY;
-    const arrorPoints = [];
-    arrorPoints.push({
+    const arrowPoints = [];
+    arrowPoints.push({
       x: event.offsetX / this.el.width,
       y: event.offsetY / this.el.height
     });
-    // create temp canvas for preview arror in real-time.
+    // create temp canvas for preview arrow in real-time.
     ctx.strokeStyle = this.color;
 
     const onmousemove = (e) => {
-      // clear previous arror.
+      // clear previous arrow.
       DataCanvas.clear(this.ctx);
-      // get the current arror end position;
-      arrorPoints[1] = {
+      // get the current arrow end position;
+      arrowPoints[1] = {
         x: e.offsetX / this.ctx.canvas.width,
         y: e.offsetY / this.ctx.canvas.height,
       };
-      // draw the current arror to temp canvas for preview.
-      DataCanvas.arror(ctx, {
+      // draw the current arrow to temp canvas for preview.
+      DataCanvas.arrow(ctx, {
         color: this.color,
-        points: arrorPoints
+        points: arrowPoints
       });
     }
 
     const offmousemove = () => {
       DataCanvas.clear(this.ctx);
-      this.trigger('arror.submit', {
+      this.trigger('arrow.submit', {
         color: this.color,
-        points: arrorPoints
+        points: arrowPoints
       });
       this.off('mousemove');
       this.off('mouseup', offmousemove);
