@@ -142,7 +142,6 @@ class Sketch extends Component {
   draw(type, options) {
     if (!this[type]) {
       DataCanvas[type](this.ctx, options);
-      DataCanvas[type](this.ctx, options);
       if (!this.cache[this.pageNum]) {
         this.cache[this.pageNum] = [];
       }
