@@ -189,8 +189,8 @@ class Sketch extends Component {
     });
   }
 
-  undo(pageNum) {
-    pageNum = isNaN(pageNum) ? this.pageNum : pageNum;
+  undo({ page }) {
+    const pageNum = isNaN(page) ? this.pageNum : page;
     this.cache[pageNum].pop();
     if (pageNum === this.pageNum) {
       this.repaint(pageNum);
