@@ -140,12 +140,18 @@ class Sketch extends Component {
   }
 
   draw(type, options) {
+    let pageNum = this.pageNum;
+    if (!isNaN(options.page)) {
+      pageNum = options.page;
+    }
     if (!this[type]) {
-      DataCanvas[type](this.ctx, options);
-      if (!this.cache[this.pageNum]) {
-        this.cache[this.pageNum] = [];
+      if (pageNum === this.pageNum) {
+        DataCanvas[type](this.ctx, options);
       }
-      this.cache[this.pageNum].push({
+      if (!this.cache[pageNum]) {
+        this.cache[pageNum] = [];
+      }
+      this.cache[pageNum].push({
         type,
         options
       });
