@@ -10,7 +10,8 @@ const TEXT = 'text';
 const EASE = 'ease';
 const ELLIPSE = 'ellipse';
 const ARROW = 'arrow';
-const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROW];
+const SLINE = 'sline';
+const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROW, SLINE];
 const EASE_WIDTH = 20;
 const TEXT_SIZE = 14;
 const TEXT_HEIGHT = 18;
@@ -189,8 +190,12 @@ class Sketch extends Component {
     });
   }
 
-  undo({ page }) {
+  undo(options = { page: this.pageNum }) {
+    const page = options.page;
     const pageNum = isNaN(page) ? this.pageNum : page;
+    if (!this.cache[pageNum]) {
+      this.cache[pageNum] = [];
+    }
     this.cache[pageNum].pop();
     if (pageNum === this.pageNum) {
       this.repaint(pageNum);

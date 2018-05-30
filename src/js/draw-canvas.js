@@ -8,7 +8,8 @@ const TEXT = 'text';
 const EASE = 'ease';
 const ELLIPSE = 'ellipse';
 const ARROW = 'arrow';
-const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROW];
+const SLINE = 'sline';
+const tools = [LINE, RECT, TEXT, EASE, ELLIPSE, ARROW, SLINE];
 
 const COLOR_RED = '#f00';
 const COLOR_DEFAULT = COLOR_RED;
@@ -86,6 +87,49 @@ class DrawCavans extends Component {
       this.off('mouseleave', offmousemove);
     }
     this.on('mousemove', ommousemove);
+    this.on('mouseup', offmousemove);
+    this.on('mouseleave', offmousemove);
+  }
+
+  [`${SLINE}MousedownListener`](event) {
+    const ctx = this.ctx;
+    // store the start position of the straight.
+    const x = event.offsetX, y = event.offsetY;
+    const sLinePoints = [];
+    sLinePoints.push({
+      x: event.offsetX / this.el.width,
+      y: event.offsetY / this.el.height
+    });
+    // create temp canvas for preview straight in real-time.
+    ctx.strokeStyle = this.color;
+
+    const onmousemove = (e) => {
+      // clear previous straight.
+      DataCanvas.clear(this.ctx);
+      // get the current straight end position;
+      sLinePoints[1] = {
+        x: e.offsetX / this.ctx.canvas.width,
+        y: e.offsetY / this.ctx.canvas.height,
+      };
+      // draw the current straight to temp canvas for preview.
+      DataCanvas.line(ctx, {
+        color: this.color,
+        points: sLinePoints
+      });
+    }
+
+    const offmousemove = () => {
+      DataCanvas.clear(this.ctx);
+      this.trigger('line.submit', {
+        color: this.color,
+        points: sLinePoints
+      });
+      this.off('mousemove');
+      this.off('mouseup', offmousemove);
+      this.off('mouseleave', offmousemove);
+    }
+
+    this.on('mousemove', onmousemove);
     this.on('mouseup', offmousemove);
     this.on('mouseleave', offmousemove);
   }
