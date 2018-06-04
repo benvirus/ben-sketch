@@ -179,6 +179,7 @@ class Sketch extends Component {
   }
 
   changePage(options = { page: this.pageNum }) {
+    const pageNum = options.page;
     if (isNaN(pageNum) || pageNum === this.pageNum) {
       return;
     }
