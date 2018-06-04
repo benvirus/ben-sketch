@@ -162,9 +162,7 @@ class Sketch extends Component {
   }
 
   empty() {
-    if (isNaN(pageNum)) {
-      DataCanvas.clear(this.ctx);
-    }
+    DataCanvas.clear(this.ctx);
     this.cache = {
       0: [],
     };
