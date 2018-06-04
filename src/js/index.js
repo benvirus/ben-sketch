@@ -163,6 +163,7 @@ class Sketch extends Component {
 
   empty() {
     DataCanvas.clear(this.ctx);
+    this.pageNum = 0;
     this.cache = {
       0: [],
     };
