@@ -171,11 +171,10 @@ class Sketch extends Component {
 
   clear(options = { page: this.pageNum }) {
     const page = options.page;
-    if (isNaN(page)) {
+    if (isNaN(page) || page === this.pageNum) {
       DataCanvas.clear(this.ctx);
     }
     const pageNum = isNaN(page) ? this.pageNum : page;
-    console.log(pageNum);
     this.cache[pageNum] = [];
   }
 
@@ -193,7 +192,6 @@ class Sketch extends Component {
 
   repaint(pageNum) {
     DataCanvas.clear(this.ctx);
-    console.log(this.cache);
     pageNum = isNaN(pageNum) ? this.pageNum : pageNum;
     this.cache[pageNum].map((item) => {
       DataCanvas[item.type](this.ctx, item.options);
