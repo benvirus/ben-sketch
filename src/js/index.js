@@ -194,10 +194,8 @@ class Sketch extends Component {
     DataCanvas.clear(this.ctx);
     pageNum = isNaN(pageNum) ? this.pageNum : pageNum;
     this.cache[pageNum].map((item) => {
-      try {
+      if (item.type) {
         DataCanvas[item.type](this.ctx, item.options);
-      } catch (e) {
-        console.error('repaint error:', item, e);
       }
     });
   }
