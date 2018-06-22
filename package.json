@@ -36,7 +36,7 @@
     "webpack-hot-middleware": "^2.18.2"
   },
   "dependencies": {
-    "ben-canvas": "^1.1.2",
+    "ben-canvas": "^1.1.5",
     "ben-component": "0.0.5"
   }
 }
