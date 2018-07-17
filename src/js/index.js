@@ -3,6 +3,7 @@ import DataCanvas from 'ben-canvas';
 import lineCursor from '../img/pen@1x.ico';
 import rectCursor from '../img/rect.ico';
 import DrawCanvas from './draw-canvas';
+import { removeFromList } from './compute';
 
 const LINE = 'line';
 const RECT = 'rect';
@@ -37,6 +38,12 @@ class Sketch extends Component {
     this.pageNum = this.defaultPage;
     this.cache = {
       0: [],
+    };
+    this.undoList = {
+      0: {},
+    }
+    this.clearTimeList = {
+      0: 0,
     };
     this.textMeasure();
     this.text = false;
@@ -140,10 +147,34 @@ class Sketch extends Component {
     this.trigger('colorchange');
   }
 
+  judgeSkipDraw(options) {
+    if (!options.page || options.time) {
+      return;
+    }
+    const skipRule = this.undoList[options.page][options.time];
+    if (skipRule) {
+      delete this.undoList[options.page][options.time];
+      return true;
+    }
+  }
+
+  judgeClearDraw(options) {
+    if (!options.page || options.time) {
+      return;
+    }
+    const currentClearTime = this.clearTimeList[options.page] || 0;
+    if (options.time && options.time < currentClearTime) {
+      return true;
+    }
+  }
+
   draw(type, options) {
     let pageNum = this.pageNum;
     if (!isNaN(options.page)) {
       pageNum = options.page;
+    }
+    if (this.judgeSkipDraw(options) || this.judgeClearDraw(options)) {
+      return;
     }
     if (!this[type]) {
       if (pageNum === this.pageNum) {
@@ -159,6 +190,7 @@ class Sketch extends Component {
     } else {
       this[type](options);
     }
+    console.log('cache', this.cache);
   }
 
   empty() {
@@ -175,6 +207,16 @@ class Sketch extends Component {
       DataCanvas.clear(this.ctx);
     }
     const pageNum = isNaN(page) ? this.pageNum : page;
+    if (options.time) {
+      removeFromList(this.cache[pageNum], {
+        page,
+        judge: {
+          key: time,
+          rule: (a, b) => a >= b,
+        },
+        value: options.time,
+      })
+    }
     this.cache[pageNum] = [];
   }
 
@@ -200,15 +242,32 @@ class Sketch extends Component {
     });
   }
 
-  undo(options = { page: this.pageNum }) {
+  undo(options = { page: this.pageNum, judge: { key: 'time', rule: (a, b) => a === b, }, id }) {
     const page = options.page;
     const pageNum = isNaN(page) ? this.pageNum : page;
     if (!this.cache[pageNum]) {
       this.cache[pageNum] = [];
     }
-    this.cache[pageNum].pop();
+    if (options.judge.key && options.id) {
+      this.removeFromCacheList({
+        page,
+        judge: options.judge,
+        id: options.id,
+      });
+    } else {
+      this.cache[pageNum].pop();
+    }
     if (pageNum === this.pageNum) {
       this.repaint(pageNum);
+    }
+  }
+
+  removeFromCacheList({ page, judge, id }) {
+    const currentCache = this.cache[page];
+    // 移除需要跳过/清除的操作
+    const removeResult = removeFromList(currentCache, { judge, value: id });
+    if (removeResult) {
+      this.undoList[page][id] = judge;
     }
   }
 
