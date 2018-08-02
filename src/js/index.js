@@ -3,7 +3,7 @@ import DataCanvas from 'ben-canvas';
 import lineCursor from '../img/pen@1x.ico';
 import rectCursor from '../img/rect.ico';
 import DrawCanvas from './draw-canvas';
-import { removeFromList } from './compute';
+import { removeFromList, keysrt } from './compute';
 
 const LINE = 'line';
 const RECT = 'rect';
@@ -148,10 +148,10 @@ class Sketch extends Component {
   }
 
   judgeSkipDraw(options) {
-    if (!options.page || options.time) {
+    if (isNaN(options.page) || !options.time) {
       return;
     }
-    const skipRule = this.undoList[options.page][options.time];
+    const skipRule = this.undoList[options.page] && this.undoList[options.page][options.time];
     if (skipRule) {
       delete this.undoList[options.page][options.time];
       return true;
@@ -159,7 +159,7 @@ class Sketch extends Component {
   }
 
   judgeClearDraw(options) {
-    if (!options.page || options.time) {
+    if (isNaN(options.page) || !options.time) {
       return;
     }
     const currentClearTime = this.clearTimeList[options.page] || 0;
@@ -177,9 +177,6 @@ class Sketch extends Component {
       return;
     }
     if (!this[type]) {
-      if (pageNum === this.pageNum) {
-        DataCanvas[type](this.ctx, options);
-      }
       if (!this.cache[pageNum]) {
         this.cache[pageNum] = [];
       }
@@ -187,6 +184,9 @@ class Sketch extends Component {
         type,
         options
       });
+      if (pageNum === this.pageNum) {
+        this.repaint(pageNum);
+      }
     } else {
       this[type](options);
     }
@@ -208,14 +208,20 @@ class Sketch extends Component {
     }
     const pageNum = isNaN(page) ? this.pageNum : page;
     if (options.time) {
+      this.cache[pageNum] = this.cache[pageNum] || [];
       removeFromList(this.cache[pageNum], {
         page,
         judge: {
-          key: time,
+          key: 'time',
           rule: (a, b) => a >= b,
         },
         value: options.time,
-      })
+      });
+      if (this.clearTimeList[page] < options.time || !this.clearTimeList[page]) {
+        this.clearTimeList[page] = options.time;
+      }
+      this.repaint(this.pageNum);
+      return;
     }
     this.cache[pageNum] = [];
   }
@@ -235,23 +241,33 @@ class Sketch extends Component {
   repaint(pageNum) {
     DataCanvas.clear(this.ctx);
     pageNum = isNaN(pageNum) ? this.pageNum : pageNum;
-    this.cache[pageNum].map((item) => {
+    if (!this.cache[pageNum].length) {
+      return;
+    }
+    this.cache[pageNum].sort(function (a, b) {
+      return Number(a.options.time) - Number(b.options.time);
+    });
+    console.log('item.options repaint', pageNum, this.cache[pageNum].length);
+    this.cache[pageNum].map((item, index) => {
       if (item.type) {
+        console.log('item.options', item, item.options.time, item.type, item.options.time - this.cache[pageNum][index - 1 >= 0 ? index - 1 : 0].options.time);
         DataCanvas[item.type](this.ctx, item.options);
       }
     });
   }
 
   undo(options = { page: this.pageNum, judge: { key: 'time', rule: (a, b) => a === b, }, id }) {
+    options.id = options.externs;
     const page = options.page;
+    const judge = { key: 'time', rule: (a, b) => a === b, };
     const pageNum = isNaN(page) ? this.pageNum : page;
     if (!this.cache[pageNum]) {
       this.cache[pageNum] = [];
     }
-    if (options.judge.key && options.id) {
+    if (judge.key && options.id) {
       this.removeFromCacheList({
         page,
-        judge: options.judge,
+        judge: judge,
         id: options.id,
       });
     } else {
@@ -266,7 +282,10 @@ class Sketch extends Component {
     const currentCache = this.cache[page];
     // 移除需要跳过/清除的操作
     const removeResult = removeFromList(currentCache, { judge, value: id });
-    if (removeResult) {
+    if (!removeResult) {
+      if (!this.undoList[page]) {
+        this.undoList[page] = {};
+      }
       this.undoList[page][id] = judge;
     }
   }
@@ -274,11 +293,11 @@ class Sketch extends Component {
   resize() {
     this.canvas.width = this.width(this.el.clientWidth);
     this.canvas.height = this.height(this.el.clientHeight);
-    console.log(this.options === this.drawCanvas.options);
+    console.log('handleResize size sketch', this.options === this.drawCanvas.options);
     this.drawCanvas.resize();
     this.repaint(this.pageNum);
   }
 }
 
-module.exports = Sketch;
+export default Sketch;
 

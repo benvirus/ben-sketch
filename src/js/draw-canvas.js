@@ -1,4 +1,4 @@
-import Component from 'ben-component';
+import Component from 'ben-component'
 import DataCanvas from 'ben-canvas';
 import TextTool from './text-tool';
 

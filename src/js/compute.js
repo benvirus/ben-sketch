@@ -14,4 +14,10 @@ const removeFromList = (list, { judge, value }) => {
   return isFinded;
 }
 
-export { removeFromList };
+const keysrt = (key, desc) => {
+  return function (a, b) {
+    return desc ? ~~(a[key] < b[key]) : ~~(a[key] > b[key]);
+  }
+};
+
+export { removeFromList, keysrt };
